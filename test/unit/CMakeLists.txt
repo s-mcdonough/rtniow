@@ -16,8 +16,17 @@ include(${catch2_SOURCE_DIR}/contrib/Catch.cmake)
 project(ut)
 add_executable(${PROJECT_NAME})
 
-target_sources(${PROJECT_NAME} PRIVATE main.cpp)
-target_link_libraries(${PROJECT_NAME} PRIVATE Catch2::Catch2)
+# Require c++20
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED TRUE)
+
+target_sources(${PROJECT_NAME} PRIVATE 
+    main.cpp
+    types/vec.cpp)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE 
+    Catch2::Catch2
+    types)
 
 # Links catch tests into CTest
 catch_discover_tests(${PROJECT_NAME})

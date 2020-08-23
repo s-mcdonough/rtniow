@@ -8,8 +8,7 @@ add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/W4>"
                     "$<$<CXX_COMPILER_ID:MSVC>:/WX>" 
                     "$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall>"
                     "$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wextra>"
-                    "$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-pedantic>"
-                    "$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Werror>")
+                    "$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-pedantic>")
 
 
 # Used to download and build external cmake projects
