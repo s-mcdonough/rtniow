@@ -10,6 +10,7 @@ TEST_CASE("Vector construction", "[vec]")
     constexpr vec<3> b({0,0,0});
     constexpr vec<2> c({1,0});
     constexpr vec<2> d = c * 2;
+    // c /= 2;
 
     static_assert(a.length() == 0, "a not length 0");
     static_assert(b.length() == 0, "b not length 0");
