@@ -3,19 +3,18 @@
 #include <iostream>
 #include "vec.h"
 
-class color : public vec<3, detail::color>
+namespace detail
 {
-public:
-    constexpr double r() const { return e[0]; }
-    constexpr double g() const { return e[1]; }
-    constexpr double b() const { return e[2]; }
-};
+    class color {};
+}
+
+using color = vec<3, detail::color>;
 
 std::ostream& write_color(std::ostream& out, const color& pixel) {
     // Write the translated [0,255] value of each color component.
-    out << static_cast<int>(255.999 * pixel.r()) << ' '
-        << static_cast<int>(255.999 * pixel.g()) << ' '
-        << static_cast<int>(255.999 * pixel.b()) << '\n';
+    out << static_cast<int>(254.999 * pixel[0]) << ' '
+        << static_cast<int>(254.999 * pixel[1]) << ' '
+        << static_cast<int>(254.999 * pixel[2]) << '\n';
     return out;
 }
 

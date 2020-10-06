@@ -7,7 +7,7 @@
 #include <initializer_list>
 #include <numeric>
 
-#include "utils.h" // for constexpr sqrt()
+#include "utils.h" // for constexpr sqrt() and arithmatic
 
 /**
  * An arbitry dimensional constexpr vector.
@@ -15,7 +15,7 @@
  * This vector allows for further specalization to prevent 
  * mixing dissimilar types, such as color and position.
  */
-template<int N, typename Tp = void, std::floating_point V = double>
+template<int N, typename Tp = void, utils::arithmatic V = double>
 class vec
 {
 public:
@@ -50,10 +50,12 @@ public:
         return N;
     }
 
-    constexpr ValueType length() const
+    // constexpr ValueType length() const
+    ValueType length() const
     {
         // std::sqrt is not a constexpr
-        return utils::sqrt(length_squared());
+        // return utils::sqrt(length_squared());
+        return std::sqrt(length_squared());
     }
     
     constexpr ValueType length_squared() const
@@ -80,7 +82,7 @@ public:
 
     constexpr SelfType& operator /= (const ValueType v)
     {
-        *this *= (1/v);
+        *this *= (1./v);
         return *this;
     }
 
@@ -96,7 +98,7 @@ public:
     }
 
 protected:
-    std::array<ValueType, N> e;
+    ArrayType e;
 };
 
 namespace detail
@@ -164,10 +166,10 @@ constexpr auto cross(const vec<3,T>& u, const vec<3,T>& v)
                      u[0] * v[1] - u[1] * v[0]});
 }
 
-template<int N, typename Tp>
-constexpr vec<N,Tp> unit_vector(const vec<N,Tp>& v)
+template<int N, typename Tp, std::floating_point V>
+constexpr vec<N,Tp,V> unit_vector(const vec<N,Tp,V>& v)
 {
-    return v / v.length();
+    return v / (v.length());
 }
 
 template<int N, typename Tp, std::floating_point V>
@@ -179,13 +181,6 @@ inline std::ostream& operator << (std::ostream& os, const vec<N,Tp,V>& v)
         if (i < v.size()-1) os << " ";
     }
     return os;
-}
-
-// Dont expose these types in the main namespace as they are only used
-// to differentiate the proceeding types.
-namespace detail
-{
-    class color {};
 }
 
 // Specializations: this prevents conversions between position and color

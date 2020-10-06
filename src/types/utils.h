@@ -5,7 +5,7 @@
 
 namespace utils
 {
-    template < class T >
+    template <class T>
     concept arithmatic = std::is_arithmetic_v<T>;
 
     namespace detail
