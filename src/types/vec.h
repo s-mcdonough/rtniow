@@ -9,11 +9,20 @@
 
 #include "utils.h" // for constexpr sqrt() and arithmatic
 
+#define VEC_ENABLE_IF_3_TUPLE(LENGHT, T) \
+    template<int L=N> \
+    typename std::enable_if_t<L==3, ValueType>
+
 /**
  * An arbitry dimensional constexpr vector.
  * 
  * This vector allows for further specalization to prevent 
  * mixing dissimilar types, such as color and position.
+ * 
+ * @tparam N the size of the vector
+ * @tparam Tp template specalization to enforce consistency, e.g.
+ * vec<3,color> cannot be added to vec<3> by default.
+ * @tparam V the underlying arithmatic type of scalar components
  */
 template<int N, typename Tp = void, utils::arithmatic V = double>
 class vec
@@ -31,9 +40,13 @@ public:
 
     constexpr SelfType operator-() const { return SelfType((*this * -1).e); }
 
-    constexpr double x() const { return e[0]; }
-    constexpr double y() const { return e[1]; }
-    constexpr double z() const { return e[2]; }
+    // Named accessors if vector is a 3-tuple
+    VEC_ENABLE_IF_3_TUPLE(N,ValueType)
+    constexpr x() const { return e[0]; }
+    VEC_ENABLE_IF_3_TUPLE(N,ValueType)
+    constexpr y() const { return e[1]; }
+    VEC_ENABLE_IF_3_TUPLE(N,ValueType)
+    constexpr z() const { return e[2]; }
 
     constexpr bool operator == (const SelfType& other) const
     {
@@ -50,11 +63,8 @@ public:
         return N;
     }
 
-    // constexpr ValueType length() const
-    ValueType length() const
+    constexpr ValueType length() const
     {
-        // std::sqrt is not a constexpr
-        // return utils::sqrt(length_squared());
         return std::sqrt(length_squared());
     }
     
