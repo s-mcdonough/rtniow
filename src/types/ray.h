@@ -5,8 +5,8 @@
 class ray
 {
 public:
-    constexpr ray() {};
-    constexpr ray(const point3& origin, const vec3& direction) :
+    constexpr ray() noexcept {};
+    constexpr ray(const point3& origin, const vec3& direction) noexcept :
         o(origin), d(direction) {};
 
     constexpr point3 origin() const { return o; }

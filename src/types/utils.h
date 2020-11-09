@@ -22,8 +22,12 @@ namespace utils
     template<arithmatic T>
     constexpr double sqrt(T x)
     {
-        return (x >= 0 && x < std::numeric_limits<T>::infinity())
-            ? detail::sqrtNewtonRaphson(x, x, 0)
-            : std::numeric_limits<T>::quiet_NaN();
+        if (std::is_constant_evaluated())
+        {
+            return (x >= 0 && x < std::numeric_limits<T>::infinity())
+                ? detail::sqrtNewtonRaphson(x, x, 0)
+                : std::numeric_limits<T>::quiet_NaN();
+        }
+        return std::sqrt(x);
     }
 }

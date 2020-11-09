@@ -9,9 +9,9 @@
 
 #include "utils.h" // for constexpr sqrt() and arithmatic
 
-#define VEC_ENABLE_IF_3_TUPLE(LENGHT, T) \
-    template<int L=N> \
-    typename std::enable_if_t<L==3, ValueType>
+#define VEC_ENABLE_IF_3_TUPLE(LENGTH, T) \
+    template<int L=LENGTH> \
+    typename std::enable_if_t<L==3, T>
 
 /**
  * An arbitry dimensional constexpr vector.
@@ -33,7 +33,14 @@ public:
     using ArrayType = std::array<ValueType, N>;
 
     constexpr vec() noexcept : e{} {}
+    constexpr vec(const SelfType& other) noexcept : e(other.e) {}
     constexpr vec(ArrayType arr) noexcept : e(arr) {}
+
+    constexpr SelfType& operator= (const SelfType& other) noexcept
+    {
+        e = other.e;
+        return *this;
+    }
 
     constexpr ValueType operator[] (size_t i) const { return e[i]; }
     constexpr ValueType& operator[] (size_t i) { return e[i]; }
@@ -70,7 +77,7 @@ public:
 
     constexpr ValueType length() const
     {
-        return std::sqrt(length_squared());
+        return utils::sqrt(length_squared());
     }
     
     constexpr ValueType length_squared() const
@@ -178,7 +185,7 @@ constexpr auto operator/ (const auto& a, const auto& b)
 
 constexpr auto sqrt(const auto& a)
 {
-    return detail::UnaryOp(a, [](auto x) { return std::sqrt(x); });
+    return detail::UnaryOp(a, [](auto x) { return utils::sqrt(x); });
 }
 
 template<int N, typename Tp>
