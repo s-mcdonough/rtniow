@@ -6,6 +6,7 @@
 
 namespace Catch
 {
+    // Pretty printer for vec3s
     template<>
     struct StringMaker<vec3> {
         static std::string convert( vec3 const& value ) {

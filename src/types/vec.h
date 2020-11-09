@@ -38,7 +38,12 @@ public:
     constexpr ValueType operator[] (size_t i) const { return e[i]; }
     constexpr ValueType& operator[] (size_t i) { return e[i]; }
 
-    constexpr SelfType operator-() const { return SelfType((*this * -1).e); }
+    // Negation operator
+    constexpr SelfType operator-() const 
+    { 
+        static_assert(!std::is_unsigned_v<V>, "Cannot negate an unsigned type!");
+        return SelfType((*this * -1).e); 
+    }
 
     // Named accessors if vector is a 3-tuple
     VEC_ENABLE_IF_3_TUPLE(N,ValueType)
@@ -73,7 +78,7 @@ public:
         return dot(*this, *this);
     }
 
-    // Arithmatic operators
+    // Arithmetic operators
 
     // SelfType& operator += (const SelfType& v)
     constexpr SelfType& operator += (const auto& v)
@@ -113,6 +118,16 @@ protected:
 
 namespace detail
 {
+    // Core generator to aid in type deduction and implement unary
+    // operations on vectors.
+    template<int N, typename Tp, class UnOp>
+    constexpr vec<N,Tp> UnaryOp(const vec<N,Tp>&a, UnOp op)
+    {
+        std::array<typename vec<N,Tp>::ValueType, N> out;
+        std::transform(a.cbegin(), a.cend(), out.begin(), op);
+        return vec<N,Tp>(out);
+    }
+
     // Core generator to aid in type deduction and implement binary
     // operations between vectors of equivalent types.
     template<int N, typename Tp, class BinOp>
@@ -159,6 +174,11 @@ constexpr auto operator* (const auto& a, const auto& b)
 constexpr auto operator/ (const auto& a, const auto& b)
 {
     return detail::BinaryOp(a,b,[](auto x, auto y) { return x/y; });
+}
+
+constexpr auto sqrt(const auto& a)
+{
+    return detail::UnaryOp(a, [](auto x) { return std::sqrt(x); });
 }
 
 template<int N, typename Tp>
