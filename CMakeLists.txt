@@ -10,6 +10,10 @@ add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/W4>"
                     "$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wextra>"
                     "$<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-pedantic>")
 
+# Use c++20
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Used to download and build external cmake projects
 include(FetchContent)
