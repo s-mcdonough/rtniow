@@ -7,6 +7,15 @@
 #include "vec.h"
 #include "ray.h"
 
+// Macro's to force compile time rendering
+#ifdef RENDER_COMPILE_TIME
+#define RENDER_CONSTEXPR constexpr
+#define RENDER_CONTAINER(T,N) std::array<T,N>
+#else 
+#define RENDER_CONSTEXPR
+#define RENDER_CONTAINER(T,N) std::vector<T>
+#endif
+
 constexpr bool hit_sphere(const point3& center, double radius, const ray& r) {    
     vec3 oc = r.origin() - center;
     auto a = r.direction().length_squared(); 
@@ -87,7 +96,7 @@ int main()
 
     // Run the raytracer, this produces a compile time result
     // if the return type is constexpr.
-    constexpr auto out = lam(img_height, img_width);
+    RENDER_CONSTEXPR auto out = lam(img_height, img_width);
 
     // Print results 
     using std::cout, std::cerr;
