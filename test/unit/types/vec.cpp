@@ -93,7 +93,7 @@ TEST_CASE("Vector math", "[vec],[math]")
         Catch::StringMaker<double>::precision = 15;
         using std::pow;
         SR_REQUIRE(cross(a,a) == vec3()); 
-        SR_REQUIRE(cross(a,b).length() == (a.length() * b.length())); // as sin(pi/2) == 1 for this case
+        SR_REQUIRE(cross(a,b).length() == (a.length() * b.length())); // as sin(theta) == sin(pi/2) == 1 for this case
         REQUIRE(pow(cross(c,d).length(),2) == // Validate cross product using the Grahm identity
             Approx(pow(c.length(),2) * pow(d.length(),2) - pow(dot(c,d),2))); // TODO: This is not *exactly* equal, investigate
     }
