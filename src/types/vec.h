@@ -53,11 +53,11 @@ public:
     }
 
     // Named accessors if vector is a 3-tuple
-    VEC_ENABLE_IF_3_TUPLE(N,ValueType)
+    VEC_ENABLE_IF_3_TUPLE(N,const ValueType&)
     constexpr x() const { return e[0]; }
-    VEC_ENABLE_IF_3_TUPLE(N,ValueType)
+    VEC_ENABLE_IF_3_TUPLE(N,const ValueType&)
     constexpr y() const { return e[1]; }
-    VEC_ENABLE_IF_3_TUPLE(N,ValueType)
+    VEC_ENABLE_IF_3_TUPLE(N,const ValueType&)
     constexpr z() const { return e[2]; }
 
     constexpr bool operator == (const SelfType& other) const
