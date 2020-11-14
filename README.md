@@ -19,3 +19,12 @@ have a modern enough compiler.
 
 ## Dependencies
 RTNIOW uses Catch2 as its unit test framework. Catch2 is fetched by CMake at configuration time.
+
+## Building 
+RTNIOW uses cmake  maximum flexibility 
+To build the binaries:
+   1. Make a build directory, preferably outside the source path.
+   2. Configure and generate the build system using cmake, by pointing it to the top level source directory. `cmake <any-options-here> <path-to-src-root>`
+   3. Build the project using the selected build system, shown here for Unix Makefiles. `make render` builds the runtime rendering engine, `make ut` builds unit tests, `make test` builds and runs the unit tests with CTest. `make all` builds almost everything. 
+      * The compile time rendering is specifically left out of all as it can be quite expensive depending on the frame size, scene, etc. To build the compile time renderer use `make render_ct`. 
+      * Compile time unit testing (using `static_assert`) can be run with `make ut_ct`.  
